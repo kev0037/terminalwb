@@ -93,9 +93,7 @@ joke: async () => {
 
 clear: () => {
   history.set([]);
-  // Explicitly add the banner output
-  history.update((h) => [...h, commands.banner()]);
-  return '';
+  return commands.banner();
 },
 
  myip: async () => {
@@ -188,6 +186,7 @@ Type 'help' to see list of available commands.
     return `Opening guns link: ${url}`;
   },
 };
+
 
 
 
