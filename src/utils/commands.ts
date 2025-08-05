@@ -119,8 +119,7 @@ Example: numberlookup +447911123456`;
       return `The phone number '${number}' is invalid or not found.`;
     }
 
-    return `Number Lookup Result
----------------------
+    return `
 Number      : ${data.phone || number}
 Country     : ${data.country || 'Unknown'}
 Carrier     : ${data.carrier || 'Unknown'}
@@ -327,5 +326,6 @@ Type 'help' to see list of available commands.
     return output.trim();
   },
 };
+
 
 
