@@ -129,22 +129,45 @@ Screen Height: ${screen.height}px
     return `Opening mailto:${packageJson.author.email}...`;
   },
 weather: async (args: string[]) => {
-  const city = args.join('+');
-
+  const city = args.join(' ');
   if (!city) {
     return 'Usage: weather [city]. Example: weather London';
   }
 
-  const response = await fetch(`https://wttr.in/${city}?ATm`);
-  let text = await response.text();
+  try {
+    // Geocoding city name to lat/lon using Nominatim API (OpenStreetMap)
+    const geoRes = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city)}&limit=1`
+    );
+    if (!geoRes.ok) return `Failed to fetch location data: ${geoRes.statusText}`;
+    const geoData = await geoRes.json();
 
-  // Remove the last line (footer)
-  const lines = text.split('\n');
-  if (lines.length > 1) {
-    text = lines.slice(0, -1).join('\n');
+    if (!geoData.length) {
+      return `Location '${city}' not found.`;
+    }
+
+    const { lat, lon, display_name } = geoData[0];
+
+    // Fetch weather from Open-Meteo
+    const weatherRes = await fetch(
+      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`
+    );
+    if (!weatherRes.ok) return `Failed to fetch weather data: ${weatherRes.statusText}`;
+    const weatherData = await weatherRes.json();
+
+    if (!weatherData.current_weather) {
+      return 'No current weather data available.';
+    }
+
+    const cw = weatherData.current_weather;
+    return `Weather for ${display_name}:
+Temperature: ${cw.temperature}°C
+Wind Speed: ${cw.windspeed} km/h
+Wind Direction: ${cw.winddirection}°
+Time: ${cw.time}`;
+  } catch (error) {
+    return `Error fetching weather info: ${error}`;
   }
-
-  return text;
 },
 
   banner: () => `
@@ -164,6 +187,7 @@ Type 'help' to see list of available commands.
     return `Opening guns link: ${url}`;
   },
 };
+
 
 
 
