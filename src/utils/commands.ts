@@ -56,14 +56,7 @@ theme: (args: string[]) => {
     }
   }
 },
-youtube: async (args: string[]) => {
-  if (args.length === 0) return "Usage: youtube [search terms]";
 
-  const query = encodeURIComponent(args.join(' '));
-  // Using YouTube Search API requires key, so we use a simple workaround:
-  // Just return a search URL for now:
-  return `Top YouTube search result: https://www.youtube.com/results?search_query=${query}`;
-},
 define: async (args: string[]) => {
   if (args.length === 0) return "Usage: define [word]";
 
@@ -135,20 +128,25 @@ Screen Height: ${screen.height}px
 
     return `Opening mailto:${packageJson.author.email}...`;
   },
-  weather: async (args: string[]) => {
-    const city = args.join('+');
+weather: async (args: string[]) => {
+  const city = args.join('+');
 
-    if (!city) {
-      return 'Usage: weather [city]. Example: weather London';
-    }
+  if (!city) {
+    return 'Usage: weather [city]. Example: weather London';
+  }
 
-    const weather = await fetch(`https://wttr.in/${city}?ATm`);
+  const response = await fetch(`https://wttr.in/${city}?ATm`);
+  let text = await response.text();
 
-    return weather.text();
-  },
-  exit: () => {
-    return 'Please close the tab to exit.';
-  },
+  // Remove the last line (footer)
+  const lines = text.split('\n');
+  if (lines.length > 1) {
+    text = lines.slice(0, -1).join('\n');
+  }
+
+  return text;
+},
+
   banner: () => `
 
 ██████╗  █████╗ ██╗   ██╗██████╗  ██████╗ ███╗   ██╗
@@ -166,6 +164,7 @@ Type 'help' to see list of available commands.
     return `Opening guns link: ${url}`;
   },
 };
+
 
 
 
