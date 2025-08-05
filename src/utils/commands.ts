@@ -94,7 +94,7 @@ Screen Height: ${screen.height}px
   } catch (error) {
     return `Failed to fetch IP information. Reason: ${error}`;
   }
-}
+},
 
   email: () => {
     window.open(`mailto:${packageJson.author.email}`);
@@ -132,5 +132,6 @@ Type 'help' to see list of available commands.
     return `Opening guns link: ${url}`;
   },
 };
+
 
 
