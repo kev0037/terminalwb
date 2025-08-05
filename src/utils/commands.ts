@@ -79,6 +79,37 @@ export const commands: Record<string, (args: string[]) => Promise<string> | stri
       return `Error fetching definition: ${err}`;
     }
   },
+  numberlookup: async (args: string[]) => {
+  const number = args.join('').trim();
+
+  if (!number) {
+    return `Usage: numberlookup [mobile_number]
+Example: numberlookup +447911123456`;
+  }
+
+  const apiKey = '9CB1CD58887143B5ACBA63A612ECB4EF'; 
+
+  try {
+    const res = await fetch(`https://api.veriphone.io/v2/verify?phone=${encodeURIComponent(number)}&key=${apiKey}`);
+    if (!res.ok) return `Failed to fetch number details. HTTP Error: ${res.status}`;
+
+    const data = await res.json();
+
+    if (!data.phone_valid) {
+      return `The phone number '${number}' is invalid or not found.`;
+    }
+
+    return `Number Lookup Result
+---------------------
+Number      : ${data.phone || number}
+Country     : ${data.country || 'Unknown'}
+Carrier     : ${data.carrier || 'Unknown'}
+Line Type   : ${data.phone_type || 'Unknown'}
+Valid       : ${data.phone_valid ? 'Yes' : 'No'}`;
+  } catch (error) {
+    return `Error during number lookup: ${error}`;
+  }
+},
 
   joke: async () => {
     try {
@@ -276,3 +307,4 @@ Type 'help' to see list of available commands.
     return output.trim();
   },
 };
+
