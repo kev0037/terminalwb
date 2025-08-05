@@ -96,6 +96,21 @@ joke: async () => {
 
     return '';
   },
+rps: (args: string[]) => {
+  const choices = ['rock', 'paper', 'scissors'];
+  if (args.length === 0) return 'Usage: rps [rock|paper|scissors]';
+  const userChoice = args[0].toLowerCase();
+  if (!choices.includes(userChoice)) return 'Invalid choice! Use rock, paper or scissors.';
+  const botChoice = choices[Math.floor(Math.random() * 3)];
+  if (userChoice === botChoice) return `It's a tie! We both chose ${botChoice}.`;
+  if (
+    (userChoice === 'rock' && botChoice === 'scissors') ||
+    (userChoice === 'paper' && botChoice === 'rock') ||
+    (userChoice === 'scissors' && botChoice === 'paper')
+  ) return `You win! Your ${userChoice} beats my ${botChoice}.`;
+  return `You lose! My ${botChoice} beats your ${userChoice}.`;
+},
+
  myip: async () => {
   try {
     const res = await fetch("https://ipapi.co/json/");
@@ -186,6 +201,7 @@ Type 'help' to see list of available commands.
     return `Opening guns link: ${url}`;
   },
 };
+
 
 
 
