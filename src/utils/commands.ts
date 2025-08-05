@@ -62,37 +62,30 @@ theme: (args: string[]) => {
 
     return '';
   },
-  myip: async () => {
+ myip: async () => {
   try {
-    const [ipRes, locationRes] = await Promise.all([
-      fetch("https://wtfismyip.com/json"),
-      fetch("https://we-are-jammin.xyz/json/")
-    ]);
-
-    const ipData = await ipRes.json();
-    const locationData = await locationRes.json();
+    const res = await fetch("https://ipapi.co/json/");
+    const data = await res.json();
 
     return `
-IP Address: ${ipData.YourFuckingIPAddress || 'N/A'}
-Country: ${locationData.country || 'N/A'}
-Region: ${locationData.regionName || 'N/A'}
-City: ${locationData.city || 'N/A'}
-ZIP Code: ${locationData.zip || 'N/A'}
-Full Location: ${ipData.YourFuckingLocation || 'N/A'}
-Latitude: ${locationData.lat || 'N/A'}
-Longitude: ${locationData.lon || 'N/A'}
-Timezone: ${locationData.timezone || 'N/A'}
+IP Address: ${data.ip}
+Country: ${data.country_name}
+Region: ${data.region}
+City: ${data.city}
+ZIP Code: ${data.postal}
+Latitude: ${data.latitude}
+Longitude: ${data.longitude}
+Timezone: ${data.timezone}
 Current Time: ${new Date().toLocaleString()}
-ISP: ${locationData.isp || 'N/A'}
-Organization: ${locationData.org || 'N/A'}
-Autonomous System: ${locationData.as || 'N/A'}
+ISP: ${data.org}
+Organization: ${data.org}
 Referrer: ${document.referrer || 'None'}
-System Languages: ${navigator.languages.join(', ') || 'N/A'}
+System Languages: ${navigator.languages.join(', ')}
 Screen Width: ${screen.width}px
 Screen Height: ${screen.height}px
     `.trim();
-  } catch (error) {
-    return `Failed to fetch IP information. Reason: ${error}`;
+  } catch (err) {
+    return `Failed to fetch IP information. Reason: ${err}`;
   }
 },
 
@@ -132,6 +125,7 @@ Type 'help' to see list of available commands.
     return `Opening guns link: ${url}`;
   },
 };
+
 
 
 
