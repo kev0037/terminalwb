@@ -162,6 +162,11 @@ Valid       : ${data.phone_valid ? 'Yes' : 'No'}`;
     ) return `You win! Your ${userChoice} beats my ${botChoice}.`;
     return `You lose! My ${botChoice} beats your ${userChoice}.`;
   },
+  aibot: () => {
+    const url = 'https://www.kevai.site'; 
+    window.open(url, '_blank');
+    return `Opening kevai.site: ${url}`;
+  },
 
   myip: async () => {
     try {
@@ -250,7 +255,7 @@ Type 'help' to see list of available commands.
 `,
 
   guns: () => {
-    const url = 'https://guns.lol/raydon'; // Replace with your target URL
+    const url = 'https://guns.lol/raydon'; 
     window.open(url, '_blank');
     return `Opening guns link: ${url}`;
   },
@@ -326,6 +331,7 @@ Type 'help' to see list of available commands.
     return output.trim();
   },
 };
+
 
 
 
