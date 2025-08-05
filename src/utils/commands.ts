@@ -8,17 +8,12 @@ const hostname = window.location.hostname;
 export const commands: Record<string, (args: string[]) => Promise<string> | string> = {
   help: () => 'Available commands: ' + Object.keys(commands).join(', '),
   hostname: () => hostname,
-  whoami: () => 'guest',
   date: () => new Date().toLocaleString(),
-  vi: () => `why use vi? try 'emacs'`,
-  vim: () => `why use vim? try 'emacs'`,
-  emacs: () => `why use emacs? try 'vim'`,
-  echo: (args: string[]) => args.join(' '),
   sudo: (args: string[]) => {
-    window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
-
-    return `Permission denied: unable to run the command '${args[0]}' as root.`;
+    window.open('https://youtu.be/xvFZjo5PgG0?si=X5j3OTy0rpziszZo');
+    return 'get rickrolled in 2025 dumbass';
   },
+
   theme: (args: string[]) => {
     const usage = `Usage: theme [args].
     [args]:
@@ -36,7 +31,7 @@ export const commands: Record<string, (args: string[]) => Promise<string> | stri
     switch (args[0]) {
       case 'ls': {
         let result = themes.map((t) => t.name.toLowerCase()).join(', ');
-        result += `You can preview all these themes here: ${packageJson.repository.url}/tree/master/docs/themes`;
+        result += ` You can preview all these themes here: ${packageJson.repository.url}/tree/master/docs/themes`;
 
         return result;
       }
@@ -73,12 +68,11 @@ export const commands: Record<string, (args: string[]) => Promise<string> | stri
 
     return `Opening mailto:${packageJson.author.email}...`;
   },
-
   weather: async (args: string[]) => {
     const city = args.join('+');
 
     if (!city) {
-      return 'Usage: weather [city]. Example: weather Brussels';
+      return 'Usage: weather [city]. Example: weather London';
     }
 
     const weather = await fetch(`https://wttr.in/${city}?ATm`);
@@ -88,7 +82,6 @@ export const commands: Record<string, (args: string[]) => Promise<string> | stri
   exit: () => {
     return 'Please close the tab to exit.';
   },
-
   banner: () => `
 
 ██████╗  █████╗ ██╗   ██╗██████╗  ██████╗ ███╗   ██╗
@@ -100,4 +93,9 @@ export const commands: Record<string, (args: string[]) => Promise<string> | stri
                                                     
 Type 'help' to see list of available commands.
 `,
+  guns: () => {
+    const url = 'https://guns.lol/raydon'; // Replace with your target URL
+    window.open(url, '_blank');
+    return `Opening guns link: ${url}`;
+  },
 };
