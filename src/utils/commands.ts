@@ -91,11 +91,11 @@ joke: async () => {
   }
 },
 
-clear: () => {
-  history.set([]);
-  return commands.banner();
-},
+  clear: () => {
+    history.set([]);
 
+    return '';
+  },
  myip: async () => {
   try {
     const res = await fetch("https://ipapi.co/json/");
@@ -186,6 +186,7 @@ Type 'help' to see list of available commands.
     return `Opening guns link: ${url}`;
   },
 };
+
 
 
 
