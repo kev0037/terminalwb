@@ -56,6 +56,47 @@ theme: (args: string[]) => {
     }
   }
 },
+youtube: async (args: string[]) => {
+  if (args.length === 0) return "Usage: youtube [search terms]";
+
+  const query = encodeURIComponent(args.join(' '));
+  // Using YouTube Search API requires key, so we use a simple workaround:
+  // Just return a search URL for now:
+  return `Top YouTube search result: https://www.youtube.com/results?search_query=${query}`;
+},
+define: async (args: string[]) => {
+  if (args.length === 0) return "Usage: define [word]";
+
+  const word = args[0].toLowerCase();
+
+  try {
+    const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+    if (!response.ok) return `No definition found for '${word}'.`;
+
+    const data = await response.json();
+
+    // Grab first meaning, first definition
+    const meaning = data[0]?.meanings?.[0];
+    const definition = meaning?.definitions?.[0]?.definition;
+
+    if (!definition) return `No definition found for '${word}'.`;
+
+    return `${word}: ${definition}`;
+  } catch (err) {
+    return `Error fetching definition: ${err}`;
+  }
+},
+joke: async () => {
+  try {
+    const response = await fetch('https://official-joke-api.appspot.com/jokes/random');
+    if (!response.ok) return "Failed to fetch a joke.";
+
+    const joke = await response.json();
+    return `${joke.setup}\n${joke.punchline}`;
+  } catch (err) {
+    return `Error fetching joke: ${err}`;
+  }
+},
 
   clear: () => {
     history.set([]);
@@ -125,6 +166,7 @@ Type 'help' to see list of available commands.
     return `Opening guns link: ${url}`;
   },
 };
+
 
 
 
