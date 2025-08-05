@@ -56,6 +56,26 @@ export const commands: Record<string, (args: string[]) => Promise<string> | stri
       }
     }
   },
+  dnslookup: async (args: string[]) => {
+  if (args.length === 0) return 'Usage: dnslookup [domain]';
+
+  const domain = args[0];
+
+  try {
+    const res = await fetch(`https://dns.google/resolve?name=${domain}&type=A`);
+    if (!res.ok) return `Failed to fetch DNS data. Status: ${res.status}`;
+
+    const data = await res.json();
+
+    if (!data.Answer) return `No DNS records found for ${domain}`;
+
+    const records = data.Answer.map((a: any) => a.data).join(', ');
+
+    return `A records for ${domain}: ${records}`;
+  } catch (e) {
+    return `Error fetching DNS records: ${e}`;
+  }
+},
 
   define: async (args: string[]) => {
     if (args.length === 0) return "Usage: define [word]";
@@ -307,4 +327,5 @@ Type 'help' to see list of available commands.
     return output.trim();
   },
 };
+
 
