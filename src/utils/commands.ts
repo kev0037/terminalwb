@@ -165,7 +165,7 @@ Valid       : ${data.phone_valid ? 'Yes' : 'No'}`;
   aibot: () => {
     const url = 'https://www.kevai.site'; 
     window.open(url, '_blank');
-    return `Opening kevai.site: ${url}`;
+    return `Opening: ${url}`;
   },
 
   myip: async () => {
@@ -331,6 +331,7 @@ Type 'help' to see list of available commands.
     return output.trim();
   },
 };
+
 
 
 
