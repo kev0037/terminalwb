@@ -159,15 +159,14 @@ weather: async (args: string[]) => {
       return 'No current weather data available.';
     }
 
-    const cw = weatherData.current_weather;
-    return `Weather for ${display_name}:
+  const cw = weatherData.current_weather;
+  return `Weather for ${display_name}:
 Temperature: ${cw.temperature}°C
 Wind Speed: ${cw.windspeed} km/h
-Wind Direction: ${cw.winddirection}°
-Time: ${cw.time}`;
-  } catch (error) {
-    return `Error fetching weather info: ${error}`;
-  }
+Wind Direction: ${cw.winddirection}°`;
+} catch (error) {
+  return `Error fetching weather info: ${error}`;
+}
 },
 
   banner: () => `
@@ -187,6 +186,7 @@ Type 'help' to see list of available commands.
     return `Opening guns link: ${url}`;
   },
 };
+
 
 
 
